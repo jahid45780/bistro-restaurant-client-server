@@ -5,6 +5,7 @@ import { AuthContext } from '../../Poviders/AuthProvider';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Swal from 'sweetalert2';
+import SocialLogin from '../../Components/SocialLogin/SocialLogin';
 const Login = () => {
    
    const [disabled, setDisabled]= useState(true)
@@ -15,6 +16,7 @@ const Login = () => {
    const location = useLocation()
 
    const from = location.state?.from?.pathname || "/";
+   console.log('state in the location login page', location.state);
      
 
    useEffect(()=>{
@@ -88,8 +90,10 @@ const Login = () => {
             <input disabled={disabled} className=" btn btn-primary" type="submit" value="Login" />
         </div>
       </form>
+      <SocialLogin></SocialLogin>
       <p className=' text-center mb-5 text-xl' >  New here? <Link to='/signup' > Create a New Account </Link> </p>
     </div>
+   
   </div>
 </div>
         </div>

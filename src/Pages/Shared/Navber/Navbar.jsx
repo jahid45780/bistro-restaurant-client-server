@@ -1,9 +1,14 @@
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../../Poviders/AuthProvider";
+import { FaShoppingCart } from "react-icons/fa";
+import UseCart from "../../../hooks/UseCart";
+import UseAdmin from "../../../hooks/UseAdmin";
 
 const Navbar = () => {
      const {user,logOut}= useContext(AuthContext)
+     const [isAdmin] = UseAdmin()
+     const [cart] = UseCart()
       const handleLogOut = ()=>{
           logOut()
           .then(()=>{})
@@ -13,7 +18,22 @@ const Navbar = () => {
          <li> <Link to='/' > Home </Link> </li>
           <li> <Link to='/menu' > Our Menu </Link> </li>
           <li> <Link to='/order/salad' > Order Food </Link> </li>
-          <li> <Link to='/secret' > Secret </Link> </li>
+         {
+            user && isAdmin &&  <li> <Link to='/dashboard/adminHome' > Dashboard </Link> </li>
+         }
+         {
+            user && !isAdmin &&  <li> <Link to='/dashboard/userHome' > Dashboard </Link> </li>
+         }
+        
+          <li>
+            <Link to='/dashboard/cart' >  
+             
+            <button className="btn">
+            <FaShoppingCart className=" text-2xl" ></FaShoppingCart>
+      <div className="badge badge-secondary"> +{cart.length} </div>
+      </button>
+             </Link>
+          </li>
        
           {/* {
             user ? <>
@@ -49,13 +69,13 @@ const Navbar = () => {
   <div className="navbar-end">
           
   {
-           user ? (<div className="dropdown dropdown-end">
+           user ? (<div className="dropdown  dropdown-end">
                 <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
                   <div className="w-10 rounded-full">
                     <img src={user?.photoURL} />
                   </div>
                 </label>
-                <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-60">
+                <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow  bg-orange-500 rounded-box w-60">
                   <li>
                     <a className="justify-between">
                       Profile

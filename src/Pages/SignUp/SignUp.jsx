@@ -6,9 +6,11 @@ import { Helmet } from 'react-helmet-async';
 import { useContext } from 'react';
 import { AuthContext } from '../../Poviders/AuthProvider';
 import Swal from 'sweetalert2';
+import UseAxiosPublic from '../../hooks/UseAxiosPublic';
+import SocialLogin from '../../Components/SocialLogin/SocialLogin';
 
 const SignUp = () => {
-
+    const axiosPublic = UseAxiosPublic()
      const { createUser, updateUserProfile}= useContext(AuthContext)
 
     const {
@@ -29,12 +31,24 @@ const SignUp = () => {
              updateUserProfile(data.name, data.photoURL)
              .then(()=>{
                  console.log('user profile info update');
-                 reset()
-             })
-              navigate('/')
-             .catch(error => console.log(error))
-            Swal.fire("SignUp SuccessFull");
+                //  create user in the data base
+                const userInfo = {
+                    name:data.name, 
+                    email:data.email,
 
+                } 
+                axiosPublic.post('/users', userInfo)
+                .then(res=>{
+                    if(res.data.insertedId){
+                        console.log('user add the the database ');
+                        reset()
+                       Swal.fire("SignUp SuccessFull");
+                       navigate('/')  
+                    }
+                })       
+             })  
+              
+             .catch(error => console.log(error))
          })
     }
 
@@ -90,6 +104,7 @@ const SignUp = () => {
                                 <button className="btn btn-primary">Sign Up</button>
                             </div>
                         </form>
+                        <SocialLogin></SocialLogin>
                         <p className=' text-center mb-5 text-xl' >  Already registered?  <Link to='/login' > Go to log in </Link> </p>
                     </div>
                 </div>
