@@ -76,6 +76,7 @@ const FoodCard = ({item}) => {
     </div>
   </div>
 </div>
+
         </div>
     );
 };
